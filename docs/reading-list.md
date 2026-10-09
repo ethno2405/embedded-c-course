@@ -25,10 +25,11 @@ Each phase document tells you what to read and when. This document lists all sou
 
 | Source | Use it for |
 |---|---|
-| K. N. King, *C Programming: A Modern Approach*, 2nd edition | Learn C from the beginning |
+| K. N. King, *C Programming: A Modern Approach*, 2nd edition | Learn C from the beginning. Uses C99. Learn the C23 changes from phase 1, topic 1.13. |
 | Beej's Guide to C Programming (free, beej.us) | Short, practical introduction to C |
 | Kernighan and Ritchie, *The C Programming Language*, 2nd edition | Classic, short. Old (C89). |
-| Jens Gustedt, *Modern C* (free PDF) | Modern C11/C17/C23 |
+| Jens Gustedt, *Modern C*, 3rd edition (free PDF) | Modern C, including C23 |
+| cppreference.com, "C reference" | Reference for the language and library, with the standard version of each feature |
 | Michael Barr, *Embedded C Coding Standard* (free, Barr Group) | Coding rules for embedded C |
 | Compiler Explorer (godbolt.org) | See the assembly that the compiler makes |
 

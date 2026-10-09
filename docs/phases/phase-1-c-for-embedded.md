@@ -8,7 +8,7 @@
 
 At the end of this phase, you can:
 
-- Write correct C11 code.
+- Write correct C23 code, and know which C23 features older code and older compilers do not have.
 - Use `volatile`, fixed-width integer types, and bit operations correctly.
 - Access a hardware register through a pointer to a fixed address.
 - Describe a register block with a `struct` and make sure that the layout is correct.
@@ -22,7 +22,7 @@ If you do not know C, start with topic 1.0 and its reading.
 | Source | Part |
 |---|---|
 | Oualline, *Bare Metal C* | The chapters about C basics, bit operations, and memory |
-| Gustedt, *Modern C* | Use as a reference for C11 rules (integer types, conversions, `restrict`) |
+| Gustedt, *Modern C*, 3rd edition | Use as a reference for C23 rules (integer types, conversions, `restrict`, new C23 features) |
 | Barr, *Embedded C Coding Standard* | Read all. It is short. |
 | Quantum Leaps (Samek), lessons 1–10 | Lessons about pointers, bit operations, `volatile`, and functions at the assembly level |
 
@@ -36,9 +36,9 @@ Skip this topic if you can already write C programs with pointers, arrays, strin
 
 | Source | Comment |
 |---|---|
-| K. N. King, *C Programming: A Modern Approach*, 2nd edition | Complete and clear. The best main book for a new C programmer. |
+| K. N. King, *C Programming: A Modern Approach*, 2nd edition | Complete and clear. The best main book for a new C programmer. It uses C99: learn the C23 changes in topic 1.13. |
 | Beej's Guide to C Programming (free, beej.us) | Short and practical |
-| Gustedt, *Modern C* (free PDF) | Level 1 teaches the basics with modern C |
+| Gustedt, *Modern C*, 3rd edition (free PDF) | Level 1 teaches the basics with modern C, including C23 |
 | Kernighan and Ritchie, *The C Programming Language*, 2nd edition | Short, classic, but old (C89). Use it as a second book. |
 
 **Learn these subjects, in this order:**
@@ -90,7 +90,7 @@ Compile with `-Wall -Wextra -fsanitize=address,undefined`. The sanitizers find m
 - `void *` converts to any object pointer without a cast in C.
 - A `struct` tag is in its own namespace. Use `typedef` if you want to write the type without `struct`.
 - `const` at file scope has external linkage in C (internal linkage in C++).
-- An empty parameter list `f()` means "unknown parameters" before C23. Write `f(void)`.
+- In C23, an empty parameter list `f()` means "no parameters", as in C++. Before C23, it means "unknown parameters". Much existing code writes `f(void)`. Both forms are correct in C23.
 
 **Notes for Rust programmers:**
 
@@ -99,7 +99,7 @@ Compile with `-Wall -Wextra -fsanitize=address,undefined`. The sanitizers find m
 
 ### 1.2 Fixed-width integer types
 
-- Include `<stdint.h>` and `<stdbool.h>`.
+- Include `<stdint.h>`. In C23, `bool`, `true`, and `false` are keywords. Before C23, include `<stdbool.h>`. Older code and vendor headers often include it.
 - Use `uint8_t`, `uint16_t`, `uint32_t`, `int32_t` for data that has a fixed size, for example registers and protocol fields.
 - On Cortex-M, `int` is 32 bits. On an 8-bit or 16-bit MCU, `int` can be 16 bits. Do not use `int` for values that depend on the size.
 - Use `size_t` for sizes and array indexes.
@@ -156,7 +156,7 @@ typedef struct {
 
 The CMSIS device header for the STM32F411 contains these definitions for all peripherals. In phase 2 you write some of them yourself, then you change to the CMSIS header.
 
-- Use `_Static_assert(offsetof(gpio_regs_t, BSRR) == 0x18, "layout");` to do a check of the layout.
+- Use `static_assert(offsetof(gpio_regs_t, BSRR) == 0x18);` to do a check of the layout. In C23, `static_assert` is a keyword and the message is optional. Before C23, write `_Static_assert(expression, "message");`.
 - **Do not use bit-fields for registers.** The C standard does not define the bit order or the access width of bit-fields.
 
 ### 1.6 Memory layout and sections
@@ -237,9 +237,31 @@ typedef void (*uart_rx_callback_t)(uint8_t byte, void *context);
 
   In phase 4, the BME280 driver uses this table. You can then test the driver on your PC with a fake bus.
 
+### 1.13 C23 features for embedded code
+
+The course uses C23 (ISO/IEC 9899:2024), the latest published C standard. Compile with `-std=c23`. You need GCC 14 or newer, or clang 18 or newer. These features are useful in embedded code:
+
+| Feature | Example | Use |
+|---|---|---|
+| `nullptr` | `uart_t *u = nullptr;` | A null pointer constant with its own type. Use it instead of `NULL`. |
+| `constexpr` objects | `constexpr uint32_t BAUD = 115200;` | Typed compile-time constants. Use them instead of many `#define` constants. |
+| Binary literals and digit separators | `0b0000'0011'0000'0000` | Readable register masks |
+| Enums with a fixed type | `enum gpio_mode : uint8_t { GPIO_IN, GPIO_OUT };` | Exact size for enum values in structs and protocols |
+| Attributes | `[[nodiscard]] int i2c_read(...);` | `[[nodiscard]]` makes the compiler warn when a caller ignores an error code. Also `[[maybe_unused]]` and `[[fallthrough]]`. |
+| `typeof` | `#define SWAP(a, b) do { typeof(a) t = (a); (a) = (b); (b) = t; } while (0)` | Type-safe macros |
+| Empty initializer | `uint8_t buf[16] = {};` | Set all elements to zero |
+| `bool`, `static_assert` as keywords | `static_assert(sizeof(frame_t) == 8);` | No extra headers. The message is optional. |
+| `#embed` | `static const uint8_t font[] = { #embed "font.bin" };` | Put a binary file (font, image) in flash. Needs GCC 15 or newer, or clang 19 or newer. |
+
+**Compatibility:**
+
+- Vendor headers and libraries (CMSIS, HAL drivers, FreeRTOS, FatFs) use C99 or C11. They normally compile in C23 mode. If a vendor file does not compile, compile only that file with an older standard, for example `-std=c17`.
+- If a vendor framework sets its own C standard (for example ESP-IDF), follow the framework.
+- Much existing code and many examples on the internet use C99 or C11. You must be able to read them. The notes in topics 1.1, 1.2, and 1.5 show the differences.
+
 ## Exercises
 
-Do these exercises on your PC. Use a host GCC or clang. Compile with `-std=c11 -Wall -Wextra -Wconversion -fsanitize=undefined`.
+Do these exercises on your PC. Use a host GCC (version 14 or newer) or clang (version 18 or newer). Compile with `-std=c23 -Wall -Wextra -Wconversion -fsanitize=undefined`.
 
 ### Exercise 1.1: Bit operations
 
@@ -264,7 +286,7 @@ Test edge cases: bit 0, bit 31, width 32.
 ### Exercise 1.3: Register struct
 
 1. Write the `gpio_regs_t` struct from topic 1.5.
-2. Add `_Static_assert` checks for the offsets of all fields.
+2. Add `static_assert` checks for the offsets of all fields.
 3. Allocate a `gpio_regs_t` variable on your PC. Write functions `gpio_set_mode(gpio_regs_t *port, unsigned pin, unsigned mode)` and `gpio_write(gpio_regs_t *port, unsigned pin, bool level)`. Test them against the fake port.
 
 ### Exercise 1.4: Sections

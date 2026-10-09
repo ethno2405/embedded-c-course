@@ -157,7 +157,12 @@ The course documents use this board. The learner can use a different board (`doc
 
 ## Code conventions (labs/)
 
-- C11. Compile with `-Wall -Wextra -Wshadow -Wconversion`. Fix all warnings.
+- **C standard:** use the latest published ISO C standard, now C23 (ISO/IEC 9899:2024), with `-std=c23`. Use C23 features where they help (for example `nullptr`, `constexpr`, `static_assert`, `[[nodiscard]]`, binary literals). Use a different standard only in these cases:
+  - The learner asks for it. Record the choice in the "Preferences" section of the profile, and use it in all code and examples.
+  - The learner's compiler is too old (GCC before 14, clang before 18). Help the learner update the compiler. Until then, use the newest standard that the compiler supports.
+  - A vendor framework sets its own standard (for example ESP-IDF), or a vendor file does not compile in C23 mode. Use the older standard only for that framework or file.
+- When a newer ISO C standard is published and the toolchain supports it, update this rule, the compiler flags, and phase 1 topic 1.13.
+- Compile with `-Wall -Wextra -Wshadow -Wconversion`. Fix all warnings.
 - Phases 2–6: use registers through the vendor device headers (CMSIS device headers for Arm Cortex-M). Do not use the vendor HAL. Phase 7 compares the HAL with the learner's own drivers.
 - No dynamic memory allocation in firmware.
 - Every wait loop on a hardware flag has a timeout.

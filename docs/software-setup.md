@@ -20,7 +20,7 @@ Install these tools in this order. Add each `bin` directory to the `PATH` variab
 | Tool | Source | Purpose |
 |---|---|---|
 | Git | git-scm.com | Version control |
-| Arm GNU Toolchain (`arm-none-eabi`) | developer.arm.com, "Arm GNU Toolchain Downloads" | Compiler, linker, GDB, objdump |
+| Arm GNU Toolchain (`arm-none-eabi`), version 14 or newer | developer.arm.com, "Arm GNU Toolchain Downloads" | Compiler, linker, GDB, objdump. Version 14 or newer is necessary for C23 (`-std=c23`). |
 | CMake | cmake.org | Build system generator |
 | Ninja | github.com/ninja-build/ninja | Fast build tool |
 | OpenOCD | github.com/xpack-dev-tools/openocd-xpack | Flash and debug server |
@@ -32,7 +32,7 @@ Install these tools in this order. Add each `bin` directory to the `PATH` variab
 | PulseView | sigrok.org | Logic analyzer software |
 | Serial terminal: Tera Term or PuTTY | teratermproject.github.io, putty.org | Serial console |
 | Python 3 and `pyserial` | python.org | Scripts and `miniterm` |
-| A host C compiler (MSYS2 GCC, or LLVM/clang) | msys2.org, llvm.org | Host exercises and unit tests |
+| A host C compiler: GCC 14 or newer (MSYS2), or clang 18 or newer (LLVM) | msys2.org, llvm.org | Host exercises and unit tests, with C23 |
 
 ### VS Code extensions
 
@@ -63,6 +63,8 @@ openocd --version
 python -m serial.tools.list_ports
 ```
 
+The version of `arm-none-eabi-gcc` and of a host GCC must be 14 or newer. The version of clang must be 18 or newer. Older versions do not support `-std=c23`.
+
 ## 3. Do a check of the board connection (reference board)
 
 1. Connect the Nucleo board with a USB cable. Use a cable that carries data, not only power.
@@ -83,7 +85,7 @@ Use these flags for all firmware in this course:
 
 ```
 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
--std=c11 -Wall -Wextra -Wshadow -Wconversion -g3 -Og
+-std=c23 -Wall -Wextra -Wshadow -Wconversion -g3 -Og
 -ffunction-sections -fdata-sections
 ```
 
