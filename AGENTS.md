@@ -170,6 +170,7 @@ The course documents use this board. The learner can use a different board (`doc
 - Module prefix for public names: `uart_`, `i2c_`, `bme280_`. Use `static` for private functions.
 - Each lab has its own `CMakeLists.txt` and builds with `cmake -B build -G Ninja && cmake --build build`.
 - Host unit tests go in `labs/<lab>/test/`.
+- **Verilog (phase 8, module 8.9):** code goes in `labs/phase-8-fpga/`. Use one module per file. Use non-blocking assignments (`<=`) in sequential blocks and blocking assignments (`=`) in combinational blocks. Every module has a testbench, and the learner simulates it before it goes on the board. Every asynchronous input has a synchronizer. C code for a soft-core CPU follows the C conventions above.
 
 ## Git
 

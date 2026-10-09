@@ -27,6 +27,7 @@ Each phase document describes its side projects. Make a separate document here w
 | USB MIDI controller | 8 | [phase 8](../phases/phase-8-connectivity.md) |
 | CAN sniffer | 8 | [phase 8](../phases/phase-8-connectivity.md) |
 | Self-balancing robot | 8 | [phase 8](../phases/phase-8-connectivity.md) |
+| UART and PWM in Verilog, soft-core CPU with your own peripheral | 8 | [phase 8](../phases/phase-8-connectivity.md) |
 
 ## Tasks
 

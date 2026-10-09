@@ -51,6 +51,7 @@ These items are suggestions for the phase 8 modules. If your main board already 
 | Raspberry Pi Debug Probe | SWD debugger and UART for the Pico 2 | $12 |
 | ESP32-C3 or ESP32-S3 DevKit | Wi-Fi, Bluetooth LE, CAN (TWAI) | $8–15 |
 | 2 × SN65HVD230 CAN transceiver modules (3.3 V) | CAN bus experiments | $6 |
+| FPGA board (for example Sipeed Tang Nano 9K or iCEBreaker, see [boards.md](boards.md)) | Module 8.9: introduction to FPGAs | $15–80 |
 
 ## Optional tools for later
 

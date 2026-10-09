@@ -59,6 +59,17 @@ Download these from st.com. Keep them in a local `datasheets/` directory. Do not
 | **ES0287** — STM32F411xC/E Errata Sheet | Known silicon bugs |
 | **ARMv7-M Architecture Reference Manual** (arm.com) | Full architecture reference |
 
+## Digital logic and FPGAs (phase 8, module 8.9)
+
+| Source | Use it for |
+|---|---|
+| Harris and Harris, *Digital Design and Computer Architecture, RISC-V Edition* | Digital logic, HDLs, and how a RISC-V CPU works |
+| HDLBits (hdlbits.01xz.net) | Free online Verilog exercises with automatic checks |
+| Russell Merrick, *Getting Started with FPGAs* (No Starch Press), nandland.com | A practical introduction to FPGAs |
+| Lushay Labs (learn.lushaylabs.com) | Tutorials for the Tang Nano boards with open-source tools |
+| ZipCPU blog (zipcpu.com) | Deeper topics: simulation, formal verification, bus design |
+| YosysHQ documentation | Yosys, nextpnr, and the OSS CAD Suite |
+
 ## Component datasheets
 
 | Component | Document |

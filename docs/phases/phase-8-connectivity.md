@@ -2,7 +2,7 @@
 
 **Time:** Open-ended. Select the modules that interest you. Each module takes 2–4 weeks.
 **Prerequisites:** Phase 7
-**Hardware:** ESP32-C3 or ESP32-S3 DevKit, Raspberry Pi Pico 2 and Debug Probe, 2 × SN65HVD230 CAN modules, KiCad (software)
+**Hardware:** Depends on the modules that you select: ESP32-C3 or ESP32-S3 DevKit, Raspberry Pi Pico 2 and Debug Probe, 2 × SN65HVD230 CAN modules, KiCad (software), an FPGA board
 
 ## Goal
 
@@ -160,6 +160,73 @@ The STM32F411 has no CAN peripheral. Use the ESP32 TWAI controller (a CAN 2.0 co
 1. Read the IMU at 500 Hz. Calculate the tilt angle with a complementary filter. Plot it over UART.
 2. Implement a PID controller. Test it on your PC with a simple simulation.
 3. Build the robot. Tune the PID gains. Add a remote control over BLE (ESP32) or UART.
+
+## Module 8.9: Introduction to FPGAs
+
+**Time:** 4–6 weeks
+**Hardware:** An FPGA board (see [../boards.md](../boards.md), "FPGA boards"), logic analyzer, LEDs, push buttons
+
+An FPGA (field-programmable gate array) is a chip with configurable logic. You do not write a program for it. You describe hardware (gates, registers, state machines) in a hardware description language (HDL). A tool converts the description into a configuration of the chip. In this module, you design simple peripherals yourself, the same type of peripherals that you used with registers in phases 2–5. Then you put a small CPU into the FPGA and control your own peripheral with C.
+
+This module is an introduction. FPGA design is a large field. The module shows the basics and the connection to embedded C.
+
+### Reading
+
+- Harris and Harris, *Digital Design and Computer Architecture, RISC-V Edition*: the chapters about combinational logic, sequential logic, hardware description languages, and (optional) the RISC-V microarchitecture
+- HDLBits (hdlbits.01xz.net): free online Verilog exercises. Do the "Getting Started", "Verilog Language", and "Circuits" sections.
+- Russell Merrick, *Getting Started with FPGAs* (No Starch Press), and nandland.com
+- For the Tang Nano boards: Lushay Labs tutorials (learn.lushaylabs.com)
+- For more depth: the ZipCPU blog (zipcpu.com)
+
+### Topics
+
+- **Combinational logic:** gates, truth tables, multiplexers, decoders, adders. The output depends only on the current inputs.
+- **Sequential logic:** flip-flops, registers, the clock, reset (synchronous and asynchronous), counters, finite state machines. The output depends on the inputs and on the stored state.
+- **FPGA architecture:** look-up tables (LUTs), flip-flops, block RAM, DSP blocks, PLLs, I/O blocks, and the routing between them. The configuration (the "bitstream") is usually loaded from an external flash chip at power-on.
+- **Verilog:**
+  - A `module` with ports. `wire` and `reg` (or `logic` in SystemVerilog).
+  - `assign` for combinational logic. `always @(posedge clk)` for sequential logic.
+  - **Non-blocking assignment (`<=`)** in sequential blocks. Blocking assignment (`=`) in combinational blocks.
+  - Parameters for reusable modules.
+- **The most important difference from C:** Verilog does not run line by line. Every `assign` and every `always` block is a piece of hardware. All of them work at the same time, in parallel.
+- **Simulation:** a testbench is a Verilog module that generates inputs and checks outputs. Run it with Icarus Verilog or Verilator. Look at the signals in GTKWave. Simulate every module before you put it on the board.
+- **The build flow:** synthesis (Yosys) → place and route (nextpnr) → bitstream → load the bitstream (openFPGALoader). A constraints file connects the ports of the top module to the pins of the chip.
+- **Timing:** the place-and-route tool reports the maximum clock frequency of your design. If the design is slower than the clock, it does not work reliably.
+- **Asynchronous inputs:** a button or a UART RX line is not synchronous to your clock. Pass each asynchronous input through two flip-flops (a synchronizer) before you use it. Without a synchronizer, metastability can cause random errors.
+- **Soft-core CPUs:** a CPU described in HDL, for example PicoRV32, SERV, NEORV32, or VexRiscv. The LiteX framework can build a complete system-on-chip (CPU, memory, UART, your peripherals). Your Verilog peripheral gets an address in the memory map. C code accesses its registers through a `volatile` pointer, exactly as in phase 2.
+
+### Exercises
+
+1. **Setup and blink.** Install the tools for your board. Blink an LED with a counter. Calculate the counter width from the clock frequency of your board. Measure the blink frequency with the logic analyzer.
+2. **Simulation.** Write a testbench for the counter. Simulate it. Look at the waveform in GTKWave. Make an error on purpose and find it in the waveform.
+3. **Button in hardware.** Add a two-flip-flop synchronizer and a debounce module for a button. Count presses on the LEDs. Compare the design with your software debounce from phase 3.
+4. **PWM generator.** Write a PWM module with parameters for the period and a duty cycle input. Fade an LED. Measure the output with the logic analyzer. Compare it with the timer PWM from phase 3: which registers of the timer match which parts of your module?
+5. **UART transmitter.** Write an 8N1 transmitter at 115200 baud. Send "Hello" to a serial terminal on your PC. Capture the line with the logic analyzer and decode it in PulseView.
+6. **UART receiver.** Write a receiver that samples each bit in the middle (oversampling). Echo every received byte. Compare your design with the UART flags from phase 4 (`RXNE`, `TXE`, `ORE`): where do they come from in hardware?
+7. **Finite state machine.** Implement the Simon game logic (phase 3 side project) as a hardware state machine.
+8. **Soft-core CPU and C.** Build a small system-on-chip with a RISC-V soft core and a UART. Compile a C program with a RISC-V GCC (`riscv-none-elf-gcc` or `riscv64-unknown-elf-gcc`, `-march=rv32i -mabi=ilp32`, `-std=c23`). Print "Hello" over the UART.
+9. **Your own peripheral.** Connect your PWM module to the CPU bus as a memory-mapped peripheral with three registers: `CTRL`, `PERIOD`, `DUTY`. Write a C driver for it in the course style: a register `struct` with `volatile` fields and `static_assert` checks of the offsets. Fade the LED from C.
+10. **Optional:** a WS2812B driver in hardware, or an SPI controller that drives the SSD1306 display.
+
+### Done criteria
+
+- [ ] I can explain the difference between combinational and sequential logic.
+- [ ] I can explain why Verilog blocks run in parallel, and when to use `<=` and `=`.
+- [ ] I simulate each module with a testbench before I put it on the board.
+- [ ] I can read the timing report and find the maximum clock frequency.
+- [ ] I use a synchronizer for every asynchronous input.
+- [ ] My UART transmitter and receiver work with a PC.
+- [ ] My C program on a soft-core CPU controls my own PWM peripheral through registers.
+
+### Common problems
+
+| Problem | Cause |
+|---|---|
+| The design does nothing. The synthesis log says that logic was removed. | An output is not connected to a pin in the constraints file, so the tool removes the logic that drives it. |
+| The simulation is correct, but the board is not. | A wrong pin in the constraints file, a missing synchronizer, a timing failure, or a reset that is never released |
+| Unexpected latches in the synthesis log | A combinational `always` block does not assign a value to an output in every path. Add an `else` or a `default`. |
+| Random errors with a button or a UART | The input has no synchronizer. |
+| A module connected to the board does not work, or gets hot | Some FPGA boards have I/O banks at 1.8 V or 2.5 V. Do a check of the bank voltage in the board schematic before you connect 3.3 V modules. |
 
 ## Done criteria
 

@@ -10,6 +10,9 @@ This document tells the AI mentor how to help the learner select a board, and ho
 | The learner asks ("Help me choose a board", "What must I buy?") | Do the selection. |
 | The "Hardware" section of the profile says "Not selected", and the learner starts phase 2 or wants to order hardware | Do the selection before you continue. Phases 0 and 1 do not need a board. |
 | The learner wants to change the board | Do the selection again. Record the old board in the notes. |
+| The learner starts phase 8, module 8.9 (FPGAs) | Suggest an FPGA board from the "FPGA boards" section of `docs/boards.md`. Record it as a second board in the "Hardware" section of the profile. |
+
+An FPGA board is never a main board for phases 2–7. If a learner asks to use only an FPGA board, explain that phases 2–7 need a microcontroller.
 
 ## Step 1: Ask
 

@@ -46,3 +46,16 @@ Do a check of the current specifications and prices at the vendor before you buy
 | Debug and flash tools | Use the OpenOCD or probe-rs configuration for your board, or the vendor tool. |
 
 The modules and tools in [hardware.md](hardware.md) (sensors, displays, logic analyzer, multimeter) work with all 3.3 V boards.
+
+## FPGA boards (phase 8, module 8.9)
+
+An FPGA board is **not** a main board for this course. Phases 2–7 need a microcontroller. Buy an FPGA board only for module 8.9.
+
+| Board | FPGA | Tools | Price | Notes |
+|---|---|---|---|---|
+| Sipeed Tang Nano 9K | Gowin GW1NR-9 | Open-source (Yosys, nextpnr, Apicula) or Gowin EDA | $15–20 | Cheapest. USB programmer and UART on the board. Some I/O banks are not 3.3 V: do a check of the schematic. |
+| Sipeed Tang Nano 20K | Gowin GW2AR-18 | Open-source or Gowin EDA | $30 | More logic and memory. Room for a larger soft-core system. Do a check of the open-source tool support before you buy. |
+| iCEBreaker | Lattice iCE40UP5K | Fully open-source (Yosys, nextpnr, IceStorm) | $70–80 | The best support from the open-source tools. Good documentation. |
+| Digilent Basys 3 or Arty A7 | AMD Artix-7 | AMD Vivado (vendor tool, large download) | $150–300 | Large FPGA, industry-standard tools. Good if you want an FPGA job. |
+
+If you do not know which one to select: the Tang Nano 9K for a low budget, the iCEBreaker for the easiest open-source path.

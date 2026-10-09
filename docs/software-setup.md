@@ -10,6 +10,7 @@ The tools are for the reference board (STM32 Nucleo-F411RE). The general tools (
 | Raspberry Pi Pico 2 | Pico SDK, `picotool` | OpenOCD (Raspberry Pi version) or probe-rs, with the Debug Probe | `arm-none-eabi-gcc` (`-mcpu=cortex-m33`) |
 | Nordic nRF52840 | nRF Connect SDK, nRF Command Line Tools | SEGGER J-Link or probe-rs | `arm-none-eabi-gcc` (`-mcpu=cortex-m4`) |
 | ESP32-C3 / S3 | ESP-IDF (`idf.py`) | OpenOCD (Espressif version) through the built-in USB JTAG | The ESP-IDF toolchain |
+| FPGA (module 8.9) | OSS CAD Suite (Yosys, nextpnr, Icarus Verilog, Verilator, GTKWave, openFPGALoader), or the vendor tool (Gowin EDA, AMD Vivado) | openFPGALoader loads the bitstream | `riscv-none-elf-gcc` (xPack) or `riscv64-unknown-elf-gcc` for the soft-core CPU |
 
 Ask the AI mentor for the exact setup for your board.
 

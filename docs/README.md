@@ -43,7 +43,7 @@ The times assume 6–8 hours of work per week.
 | 5 | [ADC, DMA, and low power](phases/phase-5-adc-dma-low-power.md) | 3–4 weeks | Battery-friendly data logger that writes to an SD card. |
 | 6 | [Software architecture and RTOS](phases/phase-6-architecture-rtos.md) | 3–4 weeks | Data logger on FreeRTOS with tasks and queues. |
 | 7 | [Professional practices](phases/phase-7-professional-practices.md) | 3–4 weeks | Fault analysis, unit tests, CI, and a bootloader. |
-| 8 | [Connectivity and beyond](phases/phase-8-connectivity.md) | Open-ended | Wi-Fi, USB, CAN, Zephyr, PCB design, and Rust. |
+| 8 | [Connectivity and beyond](phases/phase-8-connectivity.md) | Open-ended | Wi-Fi, USB, CAN, Zephyr, PCB design, Rust, and an introduction to FPGAs. |
 
 ## Main project: environmental data logger
 
