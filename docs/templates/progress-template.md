@@ -1,6 +1,6 @@
 # Progress
 
-The AI mentor updates this file during each session. The file is in `learner/`, which git ignores. Do not commit it.
+The AI mentor updates this file during each session. The file is in `learner/`. Commit it only on your learner branch (`learner/<name>`), never on `master`.
 
 **Started:** <YYYY-MM-DD>
 

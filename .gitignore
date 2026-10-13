@@ -36,6 +36,6 @@ secrets.h
 __pycache__/
 .venv/
 
-# Local learner data (profile and progress)
-learner/
+# Local backups of learner data
+# learner/.gitignore ignores the learner data on master.
 learner-backup-*/

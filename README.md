@@ -33,48 +33,82 @@ You can use the course alone, or with an AI coding agent as your mentor. The men
    | Standard | ~15–20 minutes | Background questions and a short adaptive quiz |
    | Full | ~45 minutes | Background questions, a longer quiz, and practical items (code reading, circuit calculations) |
 
-5. The mentor saves your profile and your progress in the `learner/` directory. Then it tells you where to start.
+5. The mentor asks for your name and makes your learner branch, `learner/<name>`. It saves your profile and your progress in the `learner/` directory on this branch. Then it tells you where to start.
 
-In each later session, open the agent in the repository root and type `Continue the course.` The agent has no memory of earlier sessions. It reads your profile and progress from `learner/`.
+In each later session, open the agent in the repository root and type `Continue the course.` The agent has no memory of earlier sessions. It finds your learner branch, and reads your profile and progress from `learner/`.
 
 ## Your data
 
 - The `learner/` directory contains `profile.md` (background, levels, preferences, mentor observations) and `progress.md` (position, completed work, session log).
-- **Git ignores `learner/`.** Your data stays on your computer. It is not committed or pushed.
-- Make a backup of `learner/` yourself if you want to keep it, for example before you delete the clone or move to a different computer.
-- You can read and edit both files. The mentor uses the content that it finds.
-- Your code in `labs/` is **not** ignored. At the end of each session, the mentor asks whether you want to commit your changes in `labs/`. It pushes only when you agree, and only to a remote that you own (for example your fork).
+- The `labs/` directory contains your code.
+- You can read and edit all files. The mentor uses the content that it finds.
 
-## Export and import your data
+### Branches
 
-Your state is in two places: the `learner/` directory (local files) and the `labs/` directory (your code, in git).
+The `master` branch is the course baseline. It contains only the course documents. Each learner has a branch `learner/<name>` that contains the course documents, the learner data, and the code of one learner.
 
-**Export** (from the old clone):
+| Branch | Content |
+|---|---|
+| `master` | Course documents |
+| `learner/<name>` | Course documents, `learner/`, and `labs/` |
 
-1. End the session with `Save my progress and end the session.` The mentor updates both files and offers to commit your code.
-2. Copy the full `learner/` directory (both `profile.md` and `progress.md`) to a safe location.
-3. Push your commits in `labs/` to a remote that you own (your fork, or your own repository).
+- At the end of each session, the mentor asks whether you want to commit your data and code. It commits only on your learner branch.
+- On `master`, the file `learner/.gitignore` ignores all files in `learner/`, so the files cannot go to `master` by accident. When the mentor makes a learner branch, it clears this file in the first commit of the branch. After that, git tracks the learner data on the branch.
+- The mentor pushes only when you agree, and only to a remote that you own (for example your fork), or to a remote where the owner permits learner branches.
+- **Your profile contains personal data.** All persons who can read the remote can read your learner branch.
+- Never merge a learner branch into `master`.
 
-**Import** (into the new clone or fork):
+### Get course updates
 
-1. Clone your fork, or pull your code into the new clone.
-2. Copy the `learner/` directory into the root of the new clone.
+The course documents change on `master`. To get the changes on your learner branch, merge `master`:
+
+```sh
+git switch master
+git pull                       # if master has a remote
+git switch learner/<name>
+git merge master
+```
+
+A learner branch does not change the course documents, so the merge has no conflicts.
+
+### Share your data with git
+
+**Send** (from the old clone or computer):
+
+1. End the session with `Save my progress and end the session.` The mentor updates your data and offers to commit it.
+2. Push your learner branch: `git push -u origin learner/<name>`.
+
+**Receive** (in the new clone, or for a different person):
+
+1. Clone the repository, or fetch: `git fetch origin`.
+2. Switch to the learner branch: `git switch learner/<name>`. Git makes a local branch from `origin/learner/<name>`.
 3. Start the agent and type `Continue the course.` The mentor continues from the "Current position" in `progress.md`.
+
+To see all learner branches, run `git branch -a --list "learner/*" "*/learner/*"`.
+
+**Before you switch branches,** commit your changes. If `learner/` contains files other than `.gitignore` on `master` (local data from an older version of the course), copy the directory to a safe location first. A checkout can overwrite ignored files and does not give a warning.
 
 **Partial data:**
 
-| You copied | Result |
+| The branch contains | Result |
 |---|---|
 | `profile.md` and `progress.md` | The mentor continues where you stopped. |
-| Only `progress.md` | The mentor keeps your position and offers a short assessment to rebuild your profile. |
-| Only `profile.md` | The mentor asks for your current phase and completed exercises, and makes a new progress file. |
+| Only `progress.md` | The mentor looks for an earlier version in the git history. If there is none, it keeps your position and offers a short assessment to rebuild your profile. |
+| Only `profile.md` | The mentor looks for an earlier version in the git history. If there is none, it asks for your current phase and completed exercises, and makes a new progress file. |
 | Nothing | The mentor asks whether you started before. If not, it starts a new assessment. |
 
-**Course version:** the progress file refers to phase and exercise numbers. If the new clone has a different version of the course documents, the mentor checks the position and corrects it with you.
+**Course version:** the progress file refers to phase and exercise numbers. If you merge a different version of the course documents, the mentor checks the position and corrects it with you.
 
 ## Start from scratch
 
-A fork of a fork can contain the code of the previous learner in `labs/`. It never contains their `learner/` directory, because git ignores it. To start from scratch, reset your data.
+The easiest way: make a new learner branch from `master`. Your old branch does not change.
+
+```sh
+git switch -c learner/<new-name> master
+echo "# Track learner data on this branch." > learner/.gitignore
+git add -- learner/.gitignore
+git commit -m "Track learner data on this branch"
+```
 
 **With the mentor:**
 
@@ -84,32 +118,29 @@ Reset only my progress.
 Delete my code in labs/ and start phase 2 again.
 ```
 
-The mentor asks what to reset (profile, progress, code, or all), shows what it will delete, and offers a backup. It deletes nothing before you confirm. Backups go to `learner-backup-<date>/` (ignored by git) and to a git tag `labs-backup-<date>`.
+The mentor asks what to reset (profile, progress, code, or all), shows what it will delete, and offers a backup. It deletes nothing before you confirm. It resets only a learner branch, never `master`. The backup is a git tag `backup/<name>-<date>`.
 
-**Without the mentor** (run in the repository root):
+**Without the mentor** (run in the repository root, on your learner branch):
 
 Bash:
 
 ```sh
-cp -r learner "learner-backup-$(date +%F)"         # optional backup of profile and progress
-git tag "labs-backup-$(date +%F)"                  # optional backup of committed code
-rm -rf learner                                     # delete profile and progress
-git rm -r -q --ignore-unmatch -- labs && rm -rf labs   # delete all code
-git commit -m "Remove learner code to start the course again"
+git tag "backup/<name>-$(date +%F)"                 # optional backup of committed data and code
+git rm -r -q --ignore-unmatch -- learner/profile.md learner/progress.md labs   # delete profile, progress, and code
+rm -rf learner/profile.md learner/progress.md labs   # delete the remaining local files
+git commit -m "Remove learner data to start the course again"
 ```
 
 PowerShell:
 
 ```powershell
-$d = Get-Date -Format yyyy-MM-dd
-Copy-Item -Recurse learner "learner-backup-$d"      # optional backup of profile and progress
-git tag "labs-backup-$d"                            # optional backup of committed code
-Remove-Item -Recurse -Force learner                 # delete profile and progress
-git rm -r -q --ignore-unmatch -- labs; Remove-Item -Recurse -Force labs -ErrorAction SilentlyContinue   # delete all code
-git commit -m "Remove learner code to start the course again"
+git tag "backup/<name>-$(Get-Date -Format yyyy-MM-dd)"   # optional backup of committed data and code
+git rm -r -q --ignore-unmatch -- learner/profile.md learner/progress.md labs   # delete profile, progress, and code
+Remove-Item -Recurse -Force learner/profile.md, learner/progress.md, labs -ErrorAction SilentlyContinue   # delete the remaining local files
+git commit -m "Remove learner data to start the course again"
 ```
 
-Uncommitted changes in `labs/` are lost. Commit them before the reset if you want to keep them in the backup tag. Skip the `git commit` command if `labs/` had no committed files.
+Uncommitted changes are lost. Commit them before the reset if you want to keep them in the backup tag. Skip the `git commit` command if the branch had no committed learner files.
 
 ## Example prompts
 
@@ -201,9 +232,9 @@ Start with [docs/README.md](docs/README.md). It has the roadmap, and each phase 
 | [AGENTS.md](AGENTS.md) | Instructions for the AI mentor |
 | [docs/](docs/) | Course documents |
 | [docs/mentor/](docs/mentor/) | Assessment and teaching instructions for the AI mentor |
-| `labs/` | Your code (created during the course) |
-| `learner/` | Your profile and progress (local, not committed) |
-| `learner-backup-<date>/` | Backups made by a reset (local, not committed) |
+| `labs/` | Your code (created during the course, only on your learner branch) |
+| `learner/` | Your profile and progress (only on your learner branch). On `master`, only `.gitignore`. |
+| `learner-backup-<date>/` | Local backups of learner data (not committed) |
 
 ## License
 

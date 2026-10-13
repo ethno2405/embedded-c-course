@@ -1,6 +1,6 @@
 # Learner Profile
 
-The AI mentor writes this file after the assessment (`docs/mentor/assessment.md`). The file is in `learner/`, which git ignores. Do not commit it.
+The AI mentor writes this file after the assessment (`docs/mentor/assessment.md`). The file is in `learner/`. Commit it only on your learner branch (`learner/<name>`), never on `master`.
 
 **Assessment date:** <YYYY-MM-DD>
 **Assessment mode:** Quick | Standard | Full
