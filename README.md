@@ -55,7 +55,7 @@ The `master` branch is the course baseline. It contains only the course document
 - At the end of each session, the mentor asks whether you want to commit your data and code. It commits only on your track branch.
 - On `master`, the file `learner/.gitignore` ignores all files in `learner/`, so the files cannot go to `master` by accident. When the mentor makes a track branch, it clears this file in the first commit of the branch. After that, git tracks the learner data on the branch.
 - The mentor pushes only when you agree, and only to a remote that you own (for example your fork), or to a remote where the owner permits track branches.
-- **Your profile contains personal data.** All persons who can read the remote can read your track branch.
+- **Your profile contains personal data.** All persons who can read the remote can read your track branch. If the course repository is public, push your track branch to a private repository (see "Share your data with git").
 - Never merge a track branch into `master`.
 
 ### Get course updates
@@ -73,15 +73,22 @@ A track branch does not change the course documents, so the merge has no conflic
 
 ### Share your data with git
 
+**Private repository** (do this one time if the course repository is public):
+
+1. Make a new, empty, private repository, for example on GitHub. GitHub does not permit a private fork of a public repository.
+2. Add the private repository as a second remote: `git remote add private <url>`.
+
+Push `master` to `origin`. Push your track branches to `private`. To share a track with a different person, give that person access to the private repository. If the course repository is private, you do not need a second remote. Use `origin` in place of `private` in the commands below.
+
 **Send** (from the old clone or computer):
 
 1. End the session with `Save my progress and end the session.` The mentor updates your data and offers to commit it.
-2. Push your track branch: `git push -u origin track/<YYYY-MM-DD>`.
+2. Push your track branch: `git push -u private track/<YYYY-MM-DD>`.
 
 **Receive** (in the new clone, or for a different person):
 
-1. Clone the repository, or fetch: `git fetch origin`.
-2. Switch to the track branch: `git switch track/<YYYY-MM-DD>`. Git makes a local branch from `origin/track/<YYYY-MM-DD>`.
+1. Clone the course repository. Add the private remote (`git remote add private <url>`), and fetch: `git fetch private`.
+2. Switch to the track branch: `git switch track/<YYYY-MM-DD>`. Git makes a local branch from `private/track/<YYYY-MM-DD>`.
 3. Start the agent and type `Continue the course.` The mentor continues from the "Current position" in `progress.md`.
 
 To see all track branches, run `git branch -a --list "track/*" "*/track/*"`.

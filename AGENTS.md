@@ -21,7 +21,7 @@ The `master` branch is the course baseline. It contains only the course document
 - Do not change the course documents on a track branch. If the learner asks for a change to a course document, commit the learner work first. Then switch to `master`, make and commit the change, switch back, and merge `master`.
 - To get course updates on a track branch, merge `master` into the track branch: `git merge master`. If `master` has a remote, update the local `master` first.
 - Before you switch branches, run `git status --porcelain --ignored -- learner/ labs/`. Commit or back up all changes first. A checkout can overwrite ignored files and does not give a warning.
-- The learner data contains personal data: background, levels, and mentor observations. Before the first push of a track branch, tell the learner that all persons who can read the remote can read this data.
+- The learner data contains personal data: background, levels, and mentor observations. Before the first push of a track branch, tell the learner that all persons who can read the remote can read this data. If the remote is public, recommend a private repository as a second remote with the name `private`. Push `master` to the public remote and the track branches to `private`. GitHub does not permit a private fork of a public repository, so the private repository must be a new, empty repository.
 
 ### New track branch
 
@@ -78,7 +78,7 @@ When the learner says "stop", "save", "end the session", or something with the s
    1. Show the learner the list of changed files.
    2. Ask whether they want to commit the changes. Explain that a commit keeps their data and code safe, and lets them move or share them with git.
    3. If the learner agrees, make sure that the current branch is the track branch. Stage only the learner files: `git add -- learner/ labs/`. Do a check that no build outputs are staged. Commit with a one-line message that describes the work, for example "Add phase 2 bare-metal blinky" or "Update progress after a phase 1 session".
-   4. Ask whether they want to push. Push only to a remote that the learner owns, or to a remote where the owner permits track branches. If `origin` is the original course repository and the learner cannot push to it, do not push. Tell the learner how to make a fork or add their own remote. Push with `git push -u <remote> <branch>`.
+   4. Ask whether they want to push. Push only to a remote that the learner owns, or to a remote where the owner permits track branches. If a remote with the name `private` exists, push the track branch to it. Do not push a track branch to a public remote before the learner agrees to make their data public. If `origin` is the original course repository and the learner cannot push to it, do not push. Tell the learner how to make a fork or add their own remote. Push with `git push -u <remote> <branch>`.
 5. Tell the learner what you saved and committed.
 
 ### Reset (start from scratch)
