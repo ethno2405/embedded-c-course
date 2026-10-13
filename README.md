@@ -33,9 +33,9 @@ You can use the course alone, or with an AI coding agent as your mentor. The men
    | Standard | ~15–20 minutes | Background questions and a short adaptive quiz |
    | Full | ~45 minutes | Background questions, a longer quiz, and practical items (code reading, circuit calculations) |
 
-5. The mentor asks for your name and makes your learner branch, `learner/<name>`. It saves your profile and your progress in the `learner/` directory on this branch. Then it tells you where to start.
+5. The mentor makes your track branch, `track/<YYYY-MM-DD>`, with the start date in the name (for example `track/2026-10-13`). It saves your profile and your progress in the `learner/` directory on this branch. Then it tells you where to start.
 
-In each later session, open the agent in the repository root and type `Continue the course.` The agent has no memory of earlier sessions. It finds your learner branch, and reads your profile and progress from `learner/`.
+In each later session, open the agent in the repository root and type `Continue the course.` The agent has no memory of earlier sessions. It finds your track branch, and reads your profile and progress from `learner/`.
 
 ## Your data
 
@@ -45,46 +45,46 @@ In each later session, open the agent in the repository root and type `Continue 
 
 ### Branches
 
-The `master` branch is the course baseline. It contains only the course documents. Each learner has a branch `learner/<name>` that contains the course documents, the learner data, and the code of one learner.
+The `master` branch is the course baseline. It contains only the course documents. Each learner has a track branch `track/<YYYY-MM-DD>` that contains the course documents, the learner data, and the code of one learner. The date is the start date. The branch name contains no personal data.
 
 | Branch | Content |
 |---|---|
 | `master` | Course documents |
-| `learner/<name>` | Course documents, `learner/`, and `labs/` |
+| `track/<YYYY-MM-DD>` | Course documents, `learner/`, and `labs/` |
 
-- At the end of each session, the mentor asks whether you want to commit your data and code. It commits only on your learner branch.
-- On `master`, the file `learner/.gitignore` ignores all files in `learner/`, so the files cannot go to `master` by accident. When the mentor makes a learner branch, it clears this file in the first commit of the branch. After that, git tracks the learner data on the branch.
-- The mentor pushes only when you agree, and only to a remote that you own (for example your fork), or to a remote where the owner permits learner branches.
-- **Your profile contains personal data.** All persons who can read the remote can read your learner branch.
-- Never merge a learner branch into `master`.
+- At the end of each session, the mentor asks whether you want to commit your data and code. It commits only on your track branch.
+- On `master`, the file `learner/.gitignore` ignores all files in `learner/`, so the files cannot go to `master` by accident. When the mentor makes a track branch, it clears this file in the first commit of the branch. After that, git tracks the learner data on the branch.
+- The mentor pushes only when you agree, and only to a remote that you own (for example your fork), or to a remote where the owner permits track branches.
+- **Your profile contains personal data.** All persons who can read the remote can read your track branch.
+- Never merge a track branch into `master`.
 
 ### Get course updates
 
-The course documents change on `master`. To get the changes on your learner branch, merge `master`:
+The course documents change on `master`. To get the changes on your track branch, merge `master`:
 
 ```sh
 git switch master
 git pull                       # if master has a remote
-git switch learner/<name>
+git switch track/<YYYY-MM-DD>
 git merge master
 ```
 
-A learner branch does not change the course documents, so the merge has no conflicts.
+A track branch does not change the course documents, so the merge has no conflicts.
 
 ### Share your data with git
 
 **Send** (from the old clone or computer):
 
 1. End the session with `Save my progress and end the session.` The mentor updates your data and offers to commit it.
-2. Push your learner branch: `git push -u origin learner/<name>`.
+2. Push your track branch: `git push -u origin track/<YYYY-MM-DD>`.
 
 **Receive** (in the new clone, or for a different person):
 
 1. Clone the repository, or fetch: `git fetch origin`.
-2. Switch to the learner branch: `git switch learner/<name>`. Git makes a local branch from `origin/learner/<name>`.
+2. Switch to the track branch: `git switch track/<YYYY-MM-DD>`. Git makes a local branch from `origin/track/<YYYY-MM-DD>`.
 3. Start the agent and type `Continue the course.` The mentor continues from the "Current position" in `progress.md`.
 
-To see all learner branches, run `git branch -a --list "learner/*" "*/learner/*"`.
+To see all track branches, run `git branch -a --list "track/*" "*/track/*"`.
 
 **Before you switch branches,** commit your changes. If `learner/` contains files other than `.gitignore` on `master` (local data from an older version of the course), copy the directory to a safe location first. A checkout can overwrite ignored files and does not give a warning.
 
@@ -101,10 +101,10 @@ To see all learner branches, run `git branch -a --list "learner/*" "*/learner/*"
 
 ## Start from scratch
 
-The easiest way: make a new learner branch from `master`. Your old branch does not change.
+The easiest way: make a new track branch from `master`. Your old branch does not change.
 
 ```sh
-git switch -c learner/<new-name> master
+git switch -c track/<YYYY-MM-DD> master   # use the date today
 echo "# Track learner data on this branch." > learner/.gitignore
 git add -- learner/.gitignore
 git commit -m "Track learner data on this branch"
@@ -118,14 +118,14 @@ Reset only my progress.
 Delete my code in labs/ and start phase 2 again.
 ```
 
-The mentor asks what to reset (profile, progress, code, or all), shows what it will delete, and offers a backup. It deletes nothing before you confirm. It resets only a learner branch, never `master`. The backup is a git tag `backup/<name>-<date>`.
+The mentor asks what to reset (profile, progress, code, or all), shows what it will delete, and offers a backup. It deletes nothing before you confirm. It resets only a track branch, never `master`. The backup is a git tag `<branch>/backup-<date>`, for example `track/2026-10-13/backup-2026-11-02`.
 
-**Without the mentor** (run in the repository root, on your learner branch):
+**Without the mentor** (run in the repository root, on your track branch):
 
 Bash:
 
 ```sh
-git tag "backup/<name>-$(date +%F)"                 # optional backup of committed data and code
+git tag "$(git branch --show-current)/backup-$(date +%F)"   # optional backup of committed data and code
 git rm -r -q --ignore-unmatch -- learner/profile.md learner/progress.md labs   # delete profile, progress, and code
 rm -rf learner/profile.md learner/progress.md labs   # delete the remaining local files
 git commit -m "Remove learner data to start the course again"
@@ -134,7 +134,7 @@ git commit -m "Remove learner data to start the course again"
 PowerShell:
 
 ```powershell
-git tag "backup/<name>-$(Get-Date -Format yyyy-MM-dd)"   # optional backup of committed data and code
+git tag "$(git branch --show-current)/backup-$(Get-Date -Format yyyy-MM-dd)"   # optional backup of committed data and code
 git rm -r -q --ignore-unmatch -- learner/profile.md learner/progress.md labs   # delete profile, progress, and code
 Remove-Item -Recurse -Force learner/profile.md, learner/progress.md, labs -ErrorAction SilentlyContinue   # delete the remaining local files
 git commit -m "Remove learner data to start the course again"
@@ -232,8 +232,8 @@ Start with [docs/README.md](docs/README.md). It has the roadmap, and each phase 
 | [AGENTS.md](AGENTS.md) | Instructions for the AI mentor |
 | [docs/](docs/) | Course documents |
 | [docs/mentor/](docs/mentor/) | Assessment and teaching instructions for the AI mentor |
-| `labs/` | Your code (created during the course, only on your learner branch) |
-| `learner/` | Your profile and progress (only on your learner branch). On `master`, only `.gitignore`. |
+| `labs/` | Your code (created during the course, only on your track branch) |
+| `learner/` | Your profile and progress (only on your track branch). On `master`, only `.gitignore`. |
 | `learner-backup-<date>/` | Local backups of learner data (not committed) |
 
 ## License

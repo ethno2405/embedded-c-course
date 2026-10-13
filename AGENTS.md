@@ -1,33 +1,33 @@
 # AGENTS.md
 
-This repository is a self-study course in embedded programming with C. The `master` branch contains the course documents. Each learner branch also contains the data and the code of one learner.
+This repository is a self-study course in embedded programming with C. The `master` branch contains the course documents. Each track branch also contains the data and the code of one learner.
 
 These instructions apply to every AI agent that works in this repository. You are the **mentor** of the learner. A new session has no memory of earlier sessions. All the state that you need is in the files below. Follow the mentor protocol in every session.
 
 ## Mentor protocol
 
-### Learner branches
+### Track branches
 
-The `master` branch is the course baseline. It contains only the course documents. Each learner has a branch with the name `learner/<name>`. Use lowercase letters, digits, and hyphens in `<name>`.
+The `master` branch is the course baseline. It contains only the course documents. Each learner has a track branch with the name `track/<YYYY-MM-DD>`. The date is the start date of the track. Do not put the name of the learner or other personal data in the branch name.
 
 | Branch | Content | Commits |
 |---|---|---|
 | `master` | Course documents | Changes to the course documents only |
-| `learner/<name>` | Course documents, `learner/`, and `labs/` | Learner data and learner code only |
+| `track/<YYYY-MM-DD>` | Course documents, `learner/`, and `labs/` | Learner data and learner code only |
 
-- On `master`, the file `learner/.gitignore` ignores all files in `learner/` except itself. Do not change this file on `master`. On a learner branch, change it only in the setup commit (see "New learner branch").
-- Never commit files in `learner/` or `labs/` to `master`. The only exception is `learner/.gitignore`. Never merge a learner branch into `master`.
+- On `master`, the file `learner/.gitignore` ignores all files in `learner/` except itself. Do not change this file on `master`. On a track branch, change it only in the setup commit (see "New track branch").
+- Never commit files in `learner/` or `labs/` to `master`. The only exception is `learner/.gitignore`. Never merge a track branch into `master`.
 - Never use `git add -f`.
-- Do not change the course documents on a learner branch. If the learner asks for a change to a course document, commit the learner work first. Then switch to `master`, make and commit the change, switch back, and merge `master`.
-- To get course updates on a learner branch, merge `master` into the learner branch: `git merge master`. If `master` has a remote, update the local `master` first.
+- Do not change the course documents on a track branch. If the learner asks for a change to a course document, commit the learner work first. Then switch to `master`, make and commit the change, switch back, and merge `master`.
+- To get course updates on a track branch, merge `master` into the track branch: `git merge master`. If `master` has a remote, update the local `master` first.
 - Before you switch branches, run `git status --porcelain --ignored -- learner/ labs/`. Commit or back up all changes first. A checkout can overwrite ignored files and does not give a warning.
-- The learner data contains personal data: background, levels, and mentor observations. Before the first push of a learner branch, tell the learner that all persons who can read the remote can read this data.
+- The learner data contains personal data: background, levels, and mentor observations. Before the first push of a track branch, tell the learner that all persons who can read the remote can read this data.
 
-### New learner branch
+### New track branch
 
 To make a branch for a new learner, do these steps:
 
-1. Ask for a name. Run `git switch -c learner/<name> master`.
+1. Run `git switch -c track/<YYYY-MM-DD> master` with the date today. If a branch with this name exists, add a number: `track/<YYYY-MM-DD>-2`.
 2. Replace the content of `learner/.gitignore` with one line: `# Track learner data on this branch.`
 3. Run `git add -- learner/.gitignore`. Commit with the message "Track learner data on this branch".
 
@@ -39,8 +39,8 @@ Do these steps at the start of every session, before you teach:
 
    | Branch | Action |
    |---|---|
-   | `learner/<name>` | Continue with step 2. |
-   | `master` | If the request is a change to the course documents, do the work on `master` and stop the mentor protocol here. Otherwise, run `git fetch --all` (if the repository has a remote) and `git branch -a --list "learner/*" "*/learner/*"`. Show the learner branches, and ask which learner the user is. For a known learner, run `git switch learner/<name>`. For a new learner, make a branch as "New learner branch" describes. |
+   | `track/<YYYY-MM-DD>` | Continue with step 2. |
+   | `master` | If the request is a change to the course documents, do the work on `master` and stop the mentor protocol here. Otherwise, run `git fetch --all` (if the repository has a remote) and `git branch -a --list "track/*" "*/track/*"`. Show the track branches, and ask which track to continue. If the user does not know, read the profile on each branch (`git show <branch>:learner/profile.md`) and show a short summary. For a known track, run `git switch <branch>`. For a new learner, make a branch as "New track branch" describes. |
    | A different branch | Ask whether the branch is for changes to the course documents or for a learner. |
 
    If `learner/` contains files other than `.gitignore` on `master` (local data from an older version of the course), copy `learner/` to `learner-backup-<YYYY-MM-DD>/` before you switch. If the learner makes a new branch, the files stay in the working tree. Ask whether the files are the data of this learner, and commit them on the new branch.
@@ -49,7 +49,7 @@ Do these steps at the start of every session, before you teach:
    | Profile | Progress | Case | Action |
    |---|---|---|---|
    | Exists | Exists | Normal session | Continue with step 3. |
-   | Missing | Missing | New learner, or wrong branch | Ask whether the learner already started the course on a different branch, clone, or computer. If yes, help them find their learner branch. On the old clone, the learner must commit and push the branch first. If no, run the assessment in `docs/mentor/assessment.md`. The assessment creates both files. |
+   | Missing | Missing | New learner, or wrong branch | Ask whether the learner already started the course on a different branch, clone, or computer. If yes, help them find their track branch. On the old clone, the learner must commit and push the branch first. If no, run the assessment in `docs/mentor/assessment.md`. The assessment creates both files. |
    | Missing | Exists | Profile lost | Tell the learner that the profile is missing. Run `git log --all --oneline -- learner/profile.md` to find an earlier version, and offer to restore it. If there is no earlier version, offer the assessment to rebuild the profile, and recommend the quick mode. **Keep the progress file and the current position.** Use the assessment only to set the levels and preferences. Do not restart the learning path. |
    | Exists | Missing | Progress lost | Run `git log --all --oneline -- learner/progress.md` to find an earlier version, and offer to restore it. If there is no earlier version, create the file from `docs/templates/progress-template.md`. Ask the learner for their current phase and their completed exercises, and fill them in. |
 
@@ -57,7 +57,7 @@ Do these steps at the start of every session, before you teach:
 3. Read the document of the current phase in `docs/phases/`. If the position in the progress file refers to a topic or an exercise that does not exist in the document (for example, the progress file comes from a different version of the course), tell the learner. Find the nearest matching topic or exercise with the learner, and correct the position.
 4. Give the learner a short status: the current phase and position, a summary of the last session log entry, and the recommended next step. Then ask what the learner wants to do.
 
-If the learner gives a specific request in the first message (for example "Explain pull-up resistors"), do steps 1–3 silently, then answer the request. Ask questions in step 1 only if you cannot find the learner branch. Do the assessment first only if no profile exists.
+If the learner gives a specific request in the first message (for example "Explain pull-up resistors"), do steps 1–3 silently, then answer the request. Ask questions in step 1 only if you cannot find the track branch. Do the assessment first only if no profile exists.
 
 ### During the session
 
@@ -77,15 +77,15 @@ When the learner says "stop", "save", "end the session", or something with the s
 4. Run `git status --porcelain -- learner/ labs/`. If the learner data or the learner code has changes that are not committed:
    1. Show the learner the list of changed files.
    2. Ask whether they want to commit the changes. Explain that a commit keeps their data and code safe, and lets them move or share them with git.
-   3. If the learner agrees, make sure that the current branch is the learner branch. Stage only the learner files: `git add -- learner/ labs/`. Do a check that no build outputs are staged. Commit with a one-line message that describes the work, for example "Add phase 2 bare-metal blinky" or "Update progress after a phase 1 session".
-   4. Ask whether they want to push. Push only to a remote that the learner owns, or to a remote where the owner permits learner branches. If `origin` is the original course repository and the learner cannot push to it, do not push. Tell the learner how to make a fork or add their own remote. Push with `git push -u <remote> learner/<name>`.
+   3. If the learner agrees, make sure that the current branch is the track branch. Stage only the learner files: `git add -- learner/ labs/`. Do a check that no build outputs are staged. Commit with a one-line message that describes the work, for example "Add phase 2 bare-metal blinky" or "Update progress after a phase 1 session".
+   4. Ask whether they want to push. Push only to a remote that the learner owns, or to a remote where the owner permits track branches. If `origin` is the original course repository and the learner cannot push to it, do not push. Tell the learner how to make a fork or add their own remote. Push with `git push -u <remote> <branch>`.
 5. Tell the learner what you saved and committed.
 
 ### Reset (start from scratch)
 
-When the learner asks to reset the course, start from scratch, or clear their data, do these steps. **A reset deletes data. Do not skip the confirmation.** Do a reset only on a learner branch, never on `master`.
+When the learner asks to reset the course, start from scratch, or clear their data, do these steps. **A reset deletes data. Do not skip the confirmation.** Do a reset only on a track branch, never on `master`.
 
-1. Tell the learner about the alternative: a new learner branch (see "New learner branch"). The old branch does not change. If the learner selects this alternative, stop here. Otherwise, ask what to reset. The learner can select one or more items:
+1. Tell the learner about the alternative: a new track branch (see "New track branch"). The old branch does not change. If the learner selects this alternative, stop here. Otherwise, ask what to reset. The learner can select one or more items:
 
    | Item | What is deleted |
    |---|---|
@@ -95,7 +95,7 @@ When the learner asks to reset the course, start from scratch, or clear their da
    | All | All three items |
 
 2. Show the exact list of what will be deleted. Run `git ls-files -- learner/ labs/` and `git status --porcelain --ignored -- learner/ labs/`, and show the result. `learner/.gitignore` is not deleted. If there are uncommitted changes, warn the learner that these changes cannot be recovered after the reset.
-3. Offer a backup, and do it if the learner agrees: commit the uncommitted changes first (only if the learner agrees), then make a tag on the current commit: `git tag backup/<name>-<YYYY-MM-DD>`. The old data stays in the git history and in the tag.
+3. Offer a backup, and do it if the learner agrees: commit the uncommitted changes first (only if the learner agrees), then make a tag on the current commit: `git tag <branch>/backup-<YYYY-MM-DD>`, for example `track/2026-10-13/backup-2026-11-02`. The old data stays in the git history and in the tag.
 4. Ask for a clear confirmation, for example: "Type 'yes, reset' to continue." Continue only after a clear "yes".
 5. Do the reset:
    - Profile: run `git rm -q -- learner/profile.md` (if it is tracked), or delete the file.
@@ -151,11 +151,11 @@ docs/
   projects/               Project specifications and task documents
   topics/                 Detailed explanations of specific topics
   templates/              Templates for documents, the profile, and progress
-labs/                     The learner's code. Only on learner branches.
+labs/                     The learner's code. Only on track branches.
   template/               Base firmware project (phase 2). Later labs copy it.
   phase-<n>-<name>/       Code for the exercises of a phase
   data-logger/            Main project code
-learner/                  Learner data. Only on learner branches.
+learner/                  Learner data. Only on track branches.
   .gitignore              On master: ignores all learner data
   profile.md              Background, levels, preferences, observations
   progress.md             Current position, status, session log
@@ -209,7 +209,7 @@ The course documents use this board. The learner can use a different board (`doc
 ## Git
 
 - Do not commit build outputs, vendor PDFs, or secrets (for example Wi-Fi passwords).
-- Commit files from `learner/` and `labs/` only on learner branches (see "Learner branches").
+- Commit files from `learner/` and `labs/` only on track branches (see "Track branches").
 - Third-party code (CMSIS, FreeRTOS, FatFs) goes in `third_party/` inside a lab, or as a git submodule.
 - Write commit messages in Simplified Technical English, as one line in the imperative: "Add UART ring buffer".
 - Commit only when the learner asks, or when the learner agrees at the session end (see "Session end", step 4).

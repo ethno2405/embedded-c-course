@@ -1,4 +1,4 @@
-# Ignore all learner data on master. A learner branch clears this file
+# Ignore all learner data on master. A track branch clears this file
 # in its first commit and then tracks the learner data. See AGENTS.md.
 *
 !.gitignore
