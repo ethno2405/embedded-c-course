@@ -6,7 +6,7 @@ A self-study course in embedded programming with C. You learn electronics basics
 - **Hardware:** a 32-bit microcontroller board that you select, and modules and tools for approximately $150–250 in total. The documents use the STM32 Nucleo-F411RE as the reference board. You can use a different board: the AI mentor suggests boards for your goals and budget, and adapts the course to your board. See [docs/boards.md](docs/boards.md) and [docs/hardware.md](docs/hardware.md).
 - **Time:** approximately 6 months for phases 0–7 at 6–8 hours per week. Phase 8 is open-ended.
 
-You can use the course alone, or with an AI coding agent as your mentor. The mentor assesses your knowledge, adapts the explanations to your background, reviews your work, and tracks your progress.
+You can use the course alone, or with an AI coding agent as your mentor. The mentor assesses your knowledge, adapts the explanations to your background, reviews your work, and tracks your progress. At the start of each phase and topic, the mentor tells you what you learn, where it is used, and what problem it solves. At the end of each topic, session, and phase, the mentor tells you how well you did, what your gaps are, what to improve, and what is next.
 
 ## Quick start with an AI mentor
 
