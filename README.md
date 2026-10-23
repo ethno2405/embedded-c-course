@@ -39,7 +39,7 @@ In each later session, open the agent in the repository root and type `Continue 
 
 ## Your data
 
-- The `learner/` directory contains `profile.md` (background, levels, preferences, mentor observations) and `progress.md` (position, completed work, session log).
+- The `learner/` directory contains `profile.md` (background, levels, preferences, mentor observations) and `progress.md` (position, completed work, notes, the newest session log entries). Older session log entries go to `session-log-archive.md`.
 - The `labs/` directory contains your code.
 - You can read and edit all files. The mentor uses the content that it finds.
 
@@ -227,6 +227,10 @@ What must I buy for the next phase?
 Help me install the toolchain on my computer.
 Is it safe to connect this 5 V sensor output to PA0?
 ```
+
+## Use fewer tokens
+
+An AI agent has usage limits, or a price for each token. To use fewer tokens, keep sessions short: do one topic or one exercise in one session, then start a new session. The mentor gives you one tip at the start of each session. All tips are in [docs/token-usage.md](docs/token-usage.md).
 
 ## Use the course without an AI mentor
 

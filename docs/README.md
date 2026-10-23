@@ -67,6 +67,7 @@ The full specification is in [projects/data-logger.md](projects/data-logger.md).
 | [software-setup.md](software-setup.md) | Toolchain, debugger, and editor setup on Windows |
 | [reading-list.md](reading-list.md) | Books, courses, and vendor documents |
 | [glossary.md](glossary.md) | Terms and abbreviations |
+| [token-usage.md](token-usage.md) | Tips to use fewer AI tokens in the course |
 | [phases/](phases/) | One document for each phase |
 | [projects/](projects/) | Project specifications and task documents |
 | [topics/](topics/) | Detailed explanations of specific topics |

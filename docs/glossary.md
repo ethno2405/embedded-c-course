@@ -46,6 +46,7 @@ Add a term to this list when you find it for the first time.
 | Synchronizer | Two or more flip-flops in series that bring an asynchronous signal into a clock domain. |
 | Synthesis | The FPGA tool step that converts HDL code into logic elements (LUTs, flip-flops). |
 | Testbench | HDL code that drives inputs into a design and checks its outputs in simulation. |
+| Token (AI model) | The unit of text that an AI model reads and writes. A token is a part of a word. The usage limits and the price of an AI agent depend on the number of tokens. See [token-usage.md](token-usage.md). |
 | UART | Universal asynchronous receiver-transmitter. Serial port with no clock line. |
 | Vector table | A table of addresses at the start of flash. The core uses it to find the reset handler and the interrupt handlers. |
 | Verilog | A hardware description language. Used in phase 8, module 8.9. |

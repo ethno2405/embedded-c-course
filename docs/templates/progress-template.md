@@ -53,9 +53,15 @@ See `docs/hardware.md` for the lists.
 | Phase 4–5 items | Not ordered |
 | Phase 8 items | Not ordered |
 
+## Notes for later sessions
+
+Facts that later sessions need, for example an agreement with the learner or a decision about the hardware. Remove a note when it is not necessary any more.
+
+-
+
 ## Session log
 
-Add the newest entry at the top.
+Add the newest entry at the top. Keep only the 5 newest entries. Move older entries to the top of `learner/session-log-archive.md`.
 
 ### <YYYY-MM-DD>
 
